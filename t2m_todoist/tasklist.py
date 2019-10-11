@@ -1,6 +1,8 @@
+# @author   David Spreekmeester <@aapit>
 from todoist.api import TodoistAPI
-from convert_todoist2markdown.task import Task
-from convert_todoist2markdown.labellist import LabelList
+from t2m_todoist.task import Task
+from t2m_todoist.labellist import LabelList
+
 
 class TaskList:
     api = None
@@ -11,10 +13,6 @@ class TaskList:
         self.api = api
         self.labelList = labelList
         self._parseApiTasks(api)
-
-    def render(self):
-        for task in self.tasks:
-            print(task.render(self.labelList))
 
     def filterUnchecked(self):
         tasks = []
@@ -36,4 +34,4 @@ class TaskList:
 
     def _parseApiTasks(self, api: TodoistAPI):
         for taskData in api.state['items']:
-            self.tasks.append(Task(taskData, api))
+            self.tasks.append(Task(taskData, api, self.labelList))

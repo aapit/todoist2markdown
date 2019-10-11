@@ -1,29 +1,28 @@
+# @author   David Spreekmeester <@aapit>
 import datetime
 import os
-from convert_todoist2markdown.task import Task
-from convert_todoist2markdown.labellist import LabelList
+from t2m_todoist.task import Task
+from t2m_todoist.labellist import LabelList
+
 
 class Note:
     task = None
-    allLabels = None
 
-    def __init__(self, task: Task, allLabels: LabelList):
+    def __init__(self, task: Task):
         self.task = task
-        self.allLabels = allLabels
 
     def render(self) -> str:
         template = open('./template.md', 'r')
-        labelNames = self.allLabels.findNamesByIds(self.task.labelIds)
-        date = ''.join([self.task.dateAdded[0:4],
-                        self.task.dateAdded[5:7],
-                        self.task.dateAdded[8:10]]
-        )
-        author = os.getenv('NOTE_AUTHOR')
+
+        getContent = lambda c: c.content
+        commentFlatList = "\n\n".join(map(getContent, self.task.comments))
+
         return template.read().format(
-            date    = date,
-            author  = author,
-            tags    = ", ".join(labelNames),
-            note    = self.task.content
+            date        = self._extractSimpleDate(),
+            author      = os.getenv('NOTE_AUTHOR'),
+            tags        = ", ".join(self.task.labelNames),
+            note        = self.task.content,
+            comments    = commentFlatList
         )
 
     def getFileSafeName(self):
@@ -50,3 +49,9 @@ class Note:
     def verifyWritten(self):
         size = os.path.getsize(self.getPath())
         return size > 0
+
+    def _extractSimpleDate(self) -> str:
+        return ''.join([self.task.dateAdded[0:4],
+                        self.task.dateAdded[5:7],
+                        self.task.dateAdded[8:10]]
+        )

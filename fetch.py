@@ -1,12 +1,13 @@
+# @author   David Spreekmeester <@aapit>
 from todoist.api import TodoistAPI
-from convert_todoist2markdown.labellist import LabelList
-from convert_todoist2markdown.tasklist import TaskList
-from convert_todoist2markdown.note import Note
-
+from t2m_todoist.labellist import LabelList
+from t2m_todoist.tasklist import TaskList
+from t2m_markdown.note import Note
 import os
 from dotenv import load_dotenv
-load_dotenv(override = True)
 
+
+load_dotenv(override = True)
 api = TodoistAPI(os.getenv('TODOIST_TOKEN'))
 api.sync()
 
@@ -16,18 +17,8 @@ taskList.filterUnchecked()
 taskList.filterByLabel('note')
 
 print('Found ' + str(len(taskList.tasks)) + ' tasks labeled \'note\'.')
-
 for task in taskList.tasks:
-    note = Note(task, labelList)
+    note = Note(task)
     note.write()
     if (note.verifyWritten()):
         task.complete()
-
-#----
-#def filterByProp(items: list, prop: str, value: str) -> list:
-#    for item in items:
-#        if (item[prop] == value):
-#            return item
-#
-#def findInboxId() -> int:
-#    return filterByProp(api.state['projects'], 'name', 'Inbox')['id']

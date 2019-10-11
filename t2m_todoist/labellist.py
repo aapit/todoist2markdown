@@ -1,3 +1,4 @@
+# @author   David Spreekmeester <@aapit>
 from todoist.api import TodoistAPI
 
 class LabelList:
