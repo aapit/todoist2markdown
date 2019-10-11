@@ -1,6 +1,5 @@
-# Markdown note extractor for Todoist (`todoist2markdown`)
+# Markdown note extractor for Todoist 
 Keep your Todoist clean from stuff that doesn't require your action.
-By David Spreekmeester @aapit
 
 ## What it does
 This Python script looks for tasks in Todoist tagged with '`note`'.
@@ -21,3 +20,9 @@ From then on, you can search for it when you need a reference.
 But no longer being on your radar, you can spend your focus on your actual goals.
 
 You could trigger it from a cronjob to periodically do maintenance on your todos.
+
+## Credits
+By David Spreekmeester | [@aapit](https://github.com/aapit)
+
+This unofficial script is not condoned in any way by Doist.
+Please do not sue me if any dogs explode in microwaves 🐶💥
