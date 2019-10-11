@@ -3,7 +3,9 @@ Keep your Todoist clean from stuff that doesn't require your action.
 
 ## What it does
 This Python script looks for tasks in Todoist tagged with '`note`'.
-It then writes the task content to a Markdown file, using a template.
+It then writes the task content to a Markdown file, using a template. 
+Including the comments on the task, the labels and its creation date.
+
 Next, the task is completed in Todoist.
 
 ## Why?
