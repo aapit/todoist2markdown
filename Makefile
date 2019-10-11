@@ -1,5 +1,5 @@
 default:
-	python3 fetch.py
+	python3 extract.py
 
 install:
 	pip3 install -r requirements.txt
