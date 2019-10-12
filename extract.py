@@ -10,11 +10,12 @@ from dotenv import load_dotenv
 load_dotenv(override = True)
 api = TodoistAPI(os.getenv('TODOIST_TOKEN'))
 api.sync()
+noteTag = os.getenv('NOTE_TAG')
 
 labelList = LabelList(api)
-taskList = TaskList(api, labelList).filterOpen().filterByLabel('note')
+taskList = TaskList(api, labelList).filterOpen().filterByLabel(noteTag)
 
-print('Found ' + str(len(taskList.tasks)) + ' tasks labeled \'note\'.')
+print('Found ' + str(len(taskList.tasks)) + " tasks labeled '" + noteTag + "'.")
 for task in taskList.tasks:
     note = Note(task)
     note.write()
