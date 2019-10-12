@@ -12,7 +12,7 @@ class Note:
         self.task = task
 
     def render(self) -> str:
-        template = open('./template.md', 'r')
+        template = open(os.getenv('NOTE_TEMPLATE_PATH'), 'r')
 
         getContent = lambda c: c.content
         commentFlatList = "\n\n".join(map(getContent, self.task.comments))
