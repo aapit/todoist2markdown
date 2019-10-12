@@ -7,21 +7,23 @@ from t2m_todoist.labellist import LabelList
 class TaskList:
     api = None
     tasks = []
-    labelList = None
+    labelList = None # A list of all labels in use
 
     def __init__(self, api: TodoistAPI, labelList: LabelList):
         self.api = api
         self.labelList = labelList
         self._parseApiTasks(api)
 
-    def filterUnchecked(self):
+    # Only fetch incomplete tasks
+    def filterOpen(self):
         tasks = []
         for task in self.tasks:
-            if (task.checked == 0):
+            if (task.dateCompleted == None):
                 tasks.append(task)
         self.tasks = tasks
         return self
 
+    # Only fetch tasks with label
     def filterByLabel(self, labelName: str):
         labelId = self.labelList.findIdByName(labelName)
         tasks = []

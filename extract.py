@@ -12,7 +12,7 @@ api = TodoistAPI(os.getenv('TODOIST_TOKEN'))
 api.sync()
 
 labelList = LabelList(api)
-taskList = TaskList(api, labelList).filterUnchecked().filterByLabel('note')
+taskList = TaskList(api, labelList).filterOpen().filterByLabel('note')
 
 print('Found ' + str(len(taskList.tasks)) + ' tasks labeled \'note\'.')
 for task in taskList.tasks:
