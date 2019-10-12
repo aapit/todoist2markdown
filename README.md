@@ -15,6 +15,7 @@ And these notes don't directly translate into actions.
 That's why they shouldn't distract you from what you were planning to do.
 
 ## QuickStart
+Create a `.env` file and fill it with your config values. You can use `.env.template` as an example.
 Just tag the task in Todoist's Quick Add with `note`.
 For instance by using `@note` in the task text.
 This script then turns this type of task into a Markdown file on disk.
