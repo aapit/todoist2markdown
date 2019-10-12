@@ -20,6 +20,7 @@ class TaskList:
             if (task.checked == 0):
                 tasks.append(task)
         self.tasks = tasks
+        return self
 
     def filterByLabel(self, labelName: str):
         labelId = self.labelList.findIdByName(labelName)
@@ -31,6 +32,7 @@ class TaskList:
                 continue
             tasks.append(task)
         self.tasks = tasks
+        return self
 
     def _parseApiTasks(self, api: TodoistAPI):
         for taskData in api.state['items']:
