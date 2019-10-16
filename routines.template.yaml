@@ -1,0 +1,14 @@
+- trigger:
+    tag: note
+  action:
+    dir: /home/me/Documents/notes
+- trigger:
+    tag: wishlist
+  action:
+    dir: /home/me/Documents/notes
+    appendFilename: wishlist.md
+- trigger:
+    tag: recipe
+  action:
+    dir: /home/me/Documents/notes
+    appendFilename: tasty_recipes.md
