@@ -1,5 +1,5 @@
 # Markdown note extractor for Todoist 
-Keep your Todoist clean from stuff that doesn't require your action.
+Keep your Todoist clean from stuff that doesn't require your focus.
 
 ## What it does
 This Python script looks for tasks in Todoist tagged with triggers specified by you.
@@ -20,16 +20,34 @@ That's why they shouldn't distract you from what you were planning to do.
 You can let this script keep your Todoist spiffy clean on a regular basis.
 
 ## QuickStart
-1. Configure environment
+### 1. Install repo
+```bash
+git clone https://github.com/aapit/todoist2markdown
+cd todoist2markdown
+```
+
+### 2. Install dependencies
+Run `make install` in the project folder to install the `pip` requirements.
+
+### 3. Configure environment
 Create a `.env` file and fill it with your config values. You can use `.env.template` as an example.
 
-2. Set your routines
+### 4. Set your routines
 Use `routines.template.yaml` as an example to create your own `routines.yaml`.
-Configuring `appendFilename` adds a tagged todo item to a bundled note where all items with this tag are stored. Not setting this parameter creates a new note for every task.
 
-3. Tag your todos
-Just tag your new task in Todoist with `note`.
+- In `trigger`, set `tag` to the todo tag that should be converted.
+- In `action`, set `dir` to the directory where the Markdown notes should be stored.
+- In `action`, setting `appendFilename` to a filename adds a tagged todo item to a bundled note file. In this file, all items with the specified tag are stored. Not setting this parameter creates a new note for every task.
+
+### 5. Tag your todos
+Just tag your new task in Todoist with `note`, or whatever smarty-pants tag you will come up with.
 For instance by typing `@note` in Quick Add's task text.
+
+### 6. Run the script
+Easiest way of running the conversions on your todos is by running in the project folder:
+```bash
+make
+```
 This script then turns this type of task into a Markdown file on disk.
 From then on, you can search for it when you need a reference.
 But no longer being on your radar, you can spend your focus on your actual goals.
