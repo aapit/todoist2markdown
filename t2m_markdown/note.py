@@ -3,52 +3,63 @@ import datetime
 import os
 from t2m_todoist.task import Task
 from t2m_todoist.labellist import LabelList
+from t2m_markdown.notefilewriter import NoteFileWriter
 
 
 class Note:
-    task = None
+    task            = None
+    appendFilename  = None # If provided, content will be added to existing note
+    author          = None
+    templatePath    = None
+    content         = None
+    writer          = None
 
-    def __init__(self, task: Task):
-        self.task = task
+    def __init__(self, task: Task, directory: str, appendFilename = None):
+        self.task           = task
+        self.appendFilename = appendFilename
+        self.author         = os.getenv('NOTE_AUTHOR')
+        self.templatePath   = os.getenv('NOTE_TEMPLATE_PATH')
+        self.content        = self._getContent()
+        renderedContent     = self._render()
+        self.writer         = self._createWriter(directory, renderedContent)
 
-    def render(self) -> str:
-        template = open(os.getenv('NOTE_TEMPLATE_PATH'), 'r')
+    def write(self) -> None:
+        self.writer.write()
 
-        getContent = lambda c: c.content
-        commentFlatList = "\n\n".join(map(getContent, self.task.comments))
+    def hasFileContent(self) -> bool:
+        return self.writer.hasFileContent()
 
-        return template.read().format(
-            date        = self._extractSimpleDate(),
-            author      = os.getenv('NOTE_AUTHOR'),
-            tags        = ", ".join(self.task.labelNames),
-            note        = self.task.content,
-            comments    = commentFlatList
-        )
+    def _createWriter(self, directory: str, renderedContent: str) -> NoteFileWriter:
+        filenameHint        = self.task.content if not self.appendFilename else None
+        return NoteFileWriter(directory, renderedContent,
+            appendFilename = self.appendFilename,
+            name = filenameHint)
 
-    def getFileSafeName(self):
-        limit = 100
-        words = self.task.content.split(' ')[:7]
-        name = ' '.join(words)[0:100]
-        name = name.strip('.')
+    def _render(self) -> str:
+        template = open(self.templatePath, 'r').read()
 
-        keepchars = (' ','.','_')
-        return "".join(
-            c for c in name if c.isalnum() or c in keepchars
-        ).rstrip()
+        tags                = ", ".join(self.task.labelNames)
 
-    def getFilename(self):
-        return self.getFileSafeName() + '.md'
+        if (not self.appendFilename):
+            return template.format(
+                date        = self._extractSimpleDate(),
+                author      = self.author,
+                tags        = tags,
+                content     = self.content
+            )
+        return "\n" + ('_' * 50) + "\n" + self.content
 
-    def getPath(self):
-        return os.getenv('NOTE_FOLDER') + '/' + self.getFilename()
+    # Returns the pure textual content,
+    # consisting of task description and comments
+    def _getContent(self) -> str:
+        content = self.task.content
+        if (len(self.task.comments)):
+            content += "\n\n" + self._getCommentFlatList()
+        return content
 
-    def write(self):
-        with open(self.getPath(), "w") as f:
-            f.write(self.render())
-
-    def verifyWritten(self):
-        size = os.path.getsize(self.getPath())
-        return size > 0
+    def _getCommentFlatList(self) -> str:
+        getComment   = lambda c: c.content
+        return "\n\n".join(map(getComment, self.task.comments)) 
 
     def _extractSimpleDate(self) -> str:
         return ''.join([self.task.dateAdded[0:4],

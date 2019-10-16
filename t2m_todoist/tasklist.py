@@ -6,11 +6,12 @@ from t2m_todoist.labellist import LabelList
 
 class TaskList:
     api = None
-    tasks = []
+    tasks = None
     labelList = None # A list of all labels in use
 
     def __init__(self, api: TodoistAPI, labelList: LabelList):
         self.api = api
+        self.tasks = []
         self.labelList = labelList
         self._parseApiTasks(api)
 
