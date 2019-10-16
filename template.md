@@ -7,7 +7,4 @@ generator:  todoist2markdown
 ---
 
 
-{note}
-
-
-{comments}
+{content}
