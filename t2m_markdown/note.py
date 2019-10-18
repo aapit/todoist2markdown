@@ -41,7 +41,7 @@ class Note:
         content     = self.content
 
         if (self.appendFilename):
-            return "\n" + ('_' * 50) + "\n# " + date + "\n" + content
+            return "\n" + ('_' * 50) + "\n## " + date + "\n" + content
         return template.format(
             date        = date,
             author      = self.author,
@@ -59,7 +59,7 @@ class Note:
 
     def _getCommentFlatList(self) -> str:
         getComment   = lambda c: c.content
-        return "\n\n".join(map(getComment, self.task.comments)) 
+        return "\n\n".join(map(getComment, self.task.comments))
 
     def _extractSimpleDate(self) -> str:
         d = self.task.dateAdded
