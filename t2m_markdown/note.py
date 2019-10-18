@@ -2,7 +2,6 @@
 import datetime
 import os
 from t2m_todoist.task import Task
-from t2m_todoist.labellist import LabelList
 from t2m_markdown.notefilewriter import NoteFileWriter
 
 
@@ -36,18 +35,16 @@ class Note:
             name = filenameHint)
 
     def _render(self) -> str:
-        template = open(self.templatePath, 'r').read()
-
-        tags                = ", ".join(self.task.labelNames)
-
-        if (not self.appendFilename):
-            return template.format(
-                date        = self._extractSimpleDate(),
-                author      = self.author,
-                tags        = tags,
-                content     = self.content
-            )
-        return "\n" + ('_' * 50) + "\n" + self.content
+        template    = open(self.templatePath, 'r').read()
+        tags        = ", ".join(self.task.labelNames)
+        if (self.appendFilename):
+            return "\n" + ('_' * 50) + "\n" + self.content
+        return template.format(
+            date        = self._extractSimpleDate(),
+            author      = self.author,
+            tags        = tags,
+            content     = self.content
+        )
 
     # Returns the pure textual content,
     # consisting of task description and comments
@@ -62,7 +59,5 @@ class Note:
         return "\n\n".join(map(getComment, self.task.comments)) 
 
     def _extractSimpleDate(self) -> str:
-        return ''.join([self.task.dateAdded[0:4],
-                        self.task.dateAdded[5:7],
-                        self.task.dateAdded[8:10]]
-        )
+        d = self.task.dateAdded
+        return ''.join([d[0:4], d[5:7], d[8:10]])

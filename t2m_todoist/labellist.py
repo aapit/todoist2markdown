@@ -7,20 +7,20 @@ class LabelList:
     def __init__(self, api: TodoistAPI):
         self.labels = api.state['labels']
 
-    def findNameById(self, labelId: int) -> str:
-        label = self._filterByProp(self.labels, 'id', labelId)
-        return label['name']
-
     def findNamesByIds(self, labelIds: list) -> list:
         labelNames = []
         for labelId in labelIds:
-            labelNames.append(self.findNameById(labelId))
+            labelNames.append(self._findNameById(labelId))
         return labelNames
 
     def findIdByName(self, name: str) -> int:
-        return self._filterByProp(self.labels, 'name', name)['id']
+        matchesLabel    = lambda l: l['name'] == name
+        foundLabel      = list(filter(matchesLabel, self.labels))
+        if len(foundLabel):
+            return foundLabel[0]['id']
 
-    def _filterByProp(self, items: list, prop: str, value: str) -> list:
-        for item in items:
-            if (item[prop] == value):
-                return item
+    def _findNameById(self, labelId: int) -> str:
+        matchesLabel    = lambda l: l['id'] == labelId
+        foundLabel      = list(filter(matchesLabel, self.labels))
+        if len(foundLabel):
+            return foundLabel[0]['name']

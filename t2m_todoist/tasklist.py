@@ -7,12 +7,12 @@ from t2m_todoist.labellist import LabelList
 class TaskList:
     api = None
     tasks = None
-    labelList = None # A list of all labels in use
+    allLabels = None # A list of all labels in use
 
-    def __init__(self, api: TodoistAPI, labelList: LabelList):
+    def __init__(self, api: TodoistAPI, allLabels: LabelList):
         self.api = api
         self.tasks = []
-        self.labelList = labelList
+        self.allLabels = allLabels
         self._parseApiTasks(api)
 
     # Only fetch incomplete tasks
@@ -26,7 +26,7 @@ class TaskList:
 
     # Only fetch tasks with label
     def filterByLabel(self, labelName: str):
-        labelId = self.labelList.findIdByName(labelName)
+        labelId = self.allLabels.findIdByName(labelName)
         tasks = []
         for task in self.tasks:
             if (len(task.labelIds) == 0):
@@ -39,4 +39,4 @@ class TaskList:
 
     def _parseApiTasks(self, api: TodoistAPI):
         for taskData in api.state['items']:
-            self.tasks.append(Task(taskData, api, self.labelList))
+            self.tasks.append(Task(taskData, api, self.allLabels))
