@@ -37,16 +37,13 @@ class Note:
     def _render(self) -> str:
         template    = open(self.templatePath, 'r').read()
         tags        = ", ".join(self.task.labelNames)
-        date        = self._extractSimpleDate()
-        content     = self.content
-
         if (self.appendFilename):
-            return "\n" + ('_' * 50) + "\n# " + date + "\n" + content
+            return "\n" + ('_' * 50) + "\n" + self.content
         return template.format(
-            date        = date,
+            date        = self._extractSimpleDate(),
             author      = self.author,
             tags        = tags,
-            content     = content
+            content     = self.content
         )
 
     # Returns the pure textual content,
