@@ -41,7 +41,10 @@ class Note:
         content     = self.content
 
         if (self.appendFilename):
-            return "\n" + ('_' * 50) + "\n## " + date + "\n" + content
+            return "\n\n## " + date \
+                + "\n" + ('-' * 50) \
+                + "\n" \
+                + content
         return template.format(
             date        = date,
             author      = self.author,
